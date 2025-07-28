@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {expect, Route, test} from '@playwright/test';
 import {LoanPage} from "./pages/loan-page";
 import {LoanResultPage} from "./pages/loanresult-page";
@@ -61,6 +62,13 @@ test('Scroll range amount', async ({page}) => {
     const loanMonthlyPaymentText = await loanResultPage.finalMonthlyPayment.textContent()
     expect.soft(loanMonthlyPaymentText).toBe('83.36 €')
 });
+
+test('redirect flow', async ({ page, request }) => {
+    await page.getByTestId('id-image-element-button-image-1').click();
+    await expect( page.getByTestId('id-small-loan-calculator-field-apply') ).toBeInViewport()
+    await page.getByTestId('id-image-element-button-image-2').click();
+    await expect( page.getByTestId('id-small-loan-calculator-field-apply') ).toBeInViewport()
+})
 
 function calculateMonthlyPayment(amount: number, period: number, annualPercent: number): number {
     const monthlyRate = annualPercent / 12 / 100;
